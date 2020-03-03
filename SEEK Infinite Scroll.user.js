@@ -1,12 +1,14 @@
 // ==UserScript==
 // @name         SEEK Infinite Scroll
-// @namespace    https://www.seek.com.au/
-// @version      0.1
+// @namespace    https://davidpolitis.net/
+// @author    	 David Politis
+// @version      1.0
+// @date		 2020-03-04
 // @description  Adds infinite scrolling to SEEK searches
-// @author       You
 // @match        https://www.seek.com.au/jobs*
 // @connect      seek.com.au
 // @grant        GM.xmlHttpRequest
+// @copyright	 2019, David Politis
 // ==/UserScript==
 
 var xhrLocked = false;
