@@ -8,7 +8,7 @@
 // @match        https://www.seek.com.au/jobs*
 // @connect      seek.com.au
 // @grant        GM.xmlHttpRequest
-// @copyright	 2019, David Politis
+// @copyright	 2020, David Politis
 // ==/UserScript==
 
 var xhrLocked = false;
