@@ -3,7 +3,7 @@
 // @namespace    https://davidpolitis.net/
 // @author    	 David Politis
 // @version      1.0
-// @date		 2020-03-04
+// @date         2020-03-04
 // @description  Adds infinite scrolling to SEEK searches
 // @match        https://www.seek.com.au/jobs*
 // @connect      seek.com.au
