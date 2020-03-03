@@ -9,6 +9,8 @@
 // @grant        GM.xmlHttpRequest
 // ==/UserScript==
 
+var xhrLocked = false;
+
 function getResultsWrapper(doc)
 {
     return doc.querySelector('div._3MPUOLE');
@@ -31,24 +33,39 @@ function getNextPageOnScroll(doc)
 
         // Use Observer to check if last element has been scrolled past
         let observer = new IntersectionObserver(entries => {
-            if (entries[0].intersectionRatio == 1)
+            if (entries[0].intersectionRatio == 1 && !xhrLocked)
             {
                 console.log('Loading next page...');
 
+                xhrLocked = true;
+
                 GM.xmlHttpRequest( {
                     method: 'GET',
+                    timeout: 60000,
                     url: nextPage,
                     onload: function(response) {
                         let nextPageDoc = new DOMParser().parseFromString(response.responseText, 'text/html');
                         let nextPageResults = getResultsWrapper(nextPageDoc);
                         for (let node of nextPageResults.childNodes) {
-                            let newNode = document.importNode(node, true);
-                            resultWrapper.appendChild(newNode);
+                            if (!(node.firstChild.getAttribute('data-automation') == 'premiumJob'))
+                            {
+                                let newNode = document.importNode(node, true);
+                                resultWrapper.appendChild(newNode);
+                            }
                         }
 
+                        xhrLocked = false;
                         observer.unobserve(lastResult);
 
-                        getNextPageOnScroll(nextPageDoc.body);
+                        lastResult.scrollIntoView();
+
+                        return getNextPageOnScroll(nextPageDoc.body);
+                    },
+                    onerror: function() {
+                        xhrLocked = false;
+                    },
+                    ontimeout: function() {
+                        xhrLocked = false;
                     }
                 });
             }
